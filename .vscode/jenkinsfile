@@ -10,7 +10,7 @@ pipeline {
     }
 
     stages {
-        stage('Clenup workspace') {
+        stage('Cleanup workspace') {
             steps {
                 script {
                     cleanWs()
@@ -21,24 +21,28 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
+                    // Use 'main' as the branch name instead of 'master'
                     git branch: 'main', url: 'https://github.com/Rineeth-Krishna-B/gitops_argocd_project.git'
                 }
             }
         }
-        stage('Build Docker Image'){
-            steps{
-                script{
 
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Define the Dockerfile location
+                    // Build the Docker image
                     docker_image = docker.build "${IMAGE_NAME}"
                 }
             }
         }
-        stage('Push Docker Image'){
-            steps{
-                script{
 
+        stage('Push Docker Image') {
+            steps {
+                script {
                     docker.withRegistry('',REGISTRY_CREDS){
-                        docker_image.push("$BUILD_NUMBER")
+                        // Push the image with both the build number tag and 'latest' tag
+                        docker_image.push("${BUILD_NUMBER}")
                         docker_image.push('latest')
                     }
                 }
