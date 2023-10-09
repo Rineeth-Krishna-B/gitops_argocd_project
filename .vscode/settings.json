@@ -9,7 +9,7 @@
     },
     "jenkins-runner.hostConfigs": {
         "jenkins-master": {
-            "url": "http://13.232.114.239:8080",
+            "url": "http://65.0.203.216:8080",
             "user": "Rineeth-Krishna-B",
             "password": "rineeth@2002",
             "useCrumbIssuer": true,

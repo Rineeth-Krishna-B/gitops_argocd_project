@@ -22,6 +22,7 @@ pipeline {
             steps {
                 script {
                     // Use 'main' as the branch name instead of 'master'
+                    git credentialsId: 'github'
                     git branch: 'main', url: 'https://github.com/Rineeth-Krishna-B/gitops_argocd_project.git'
                 }
             }
