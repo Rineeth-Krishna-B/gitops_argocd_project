@@ -18,36 +18,34 @@ pipeline {
             }
         }
 
-        stage('Checkout') {
+        stage('Checkout SCM') {
             steps {
                 script {
                     // Use 'main' as the branch name instead of 'master'
-                    git credentialsId: 'github'
-                    git branch: 'main', url: 'https://github.com/Rineeth-Krishna-B/gitops_argocd_project.git'
+                    git credentialsId: 'github',
+                    url: 'https://github.com/Rineeth-Krishna-B/gitops_argocd_project.git',
+                    branch: 'main'
                 }
             }
         }
-
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Define the Dockerfile location
-                    // Build the Docker image
                     docker_image = docker.build "${IMAGE_NAME}"
                 }
             }
         }
+        stage('Push Docker Image'){
+            steps{
+                script{
 
-        stage('Push Docker Image') {
-            steps {
-                script {
                     docker.withRegistry('',REGISTRY_CREDS){
-                        // Push the image with both the build number tag and 'latest' tag
-                        docker_image.push("${BUILD_NUMBER}")
+                        docker_image.push("$BUILD_NUMBER")
                         docker_image.push('latest')
                     }
                 }
             }
         }
+
     }
 }
